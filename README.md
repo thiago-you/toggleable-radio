@@ -1,5 +1,34 @@
 # Toggleable Radio
-Radio with toggleable state.
+Radio with toggleable state and configurable listeners.
+
+### DEMO
+![radiogroup](sample/radiogroup.gif?raw=true "Toggleable Radio")
+
+### USAGE DEMO ON XML
+    <you.thiago.toggleableradio.ToggleableRadioGroup
+        android:id="@+id/toggleableRadio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="16dp">
+
+        <you.thiago.toggleableradio.ToggleableRadioButton
+            android:id="@+id/rbFirstState"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="5dp"
+            android:text="First State" />
+
+        <you.thiago.toggleableradio.ToggleableRadioButton
+            android:id="@+id/rbSecondState"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="5dp"
+            android:text="Second State" />
+
+    </you.thiago.toggleableradio.ToggleableRadioGroup>
 
 ### Requirements
     Min SDK Version >= 19
