@@ -11,6 +11,7 @@ public class ToggleableRadioGroup extends LinearLayout implements RadioGroup.OnC
     public final static int UNCHECKED_ID = -1;
 
     private RadioGroup radioGroup;
+
     private int checkedId;
     private boolean preventUncheck;
     private boolean hasError;
@@ -142,6 +143,20 @@ public class ToggleableRadioGroup extends LinearLayout implements RadioGroup.OnC
         }
 
         checkedId = ToggleableRadioGroup.UNCHECKED_ID;
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+
+        int count = getChildCount();
+
+        for (int i = 0; i < count; i++) {
+            if (getChildAt(i) instanceof ToggleableRadioButton) {
+                ToggleableRadioButton child = (ToggleableRadioButton) getChildAt(i);
+                child.setEnabled(enabled);
+            }
+        }
     }
 
     /**

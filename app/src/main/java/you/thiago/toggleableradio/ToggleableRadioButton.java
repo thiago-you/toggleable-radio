@@ -15,19 +15,21 @@ import androidx.core.widget.CompoundButtonCompat;
 @SuppressWarnings({"WeakerAccess"})
 public class ToggleableRadioButton extends LinearLayout implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
-    private static final int CHECKED_COLOR = R.color.colorSecondary;
-    private static final int UNCHECKED_COLOR = R.color.textColor;
-
-    private final Context context;
+    private static final int CHECKED_COLOR = R.color.secondary;
+    private static final int UNCHECKED_COLOR = R.color.text;
 
     private boolean isChecked;
+
     private RadioButton button;
     private ToggleableRadioGroup parent;
+
+    private final Context context;
 
     public ToggleableRadioButton(Context context) {
         super(context);
 
         this.context = context;
+
         init(context, null);
         configViewColor(UNCHECKED_COLOR);
     }
@@ -36,6 +38,7 @@ public class ToggleableRadioButton extends LinearLayout implements View.OnClickL
         super(context, attrs);
 
         this.context = context;
+
         init(context, attrs);
         configViewColor(UNCHECKED_COLOR);
     }
@@ -44,12 +47,12 @@ public class ToggleableRadioButton extends LinearLayout implements View.OnClickL
         super(context, attrs, defStyleAttr);
 
         this.context = context;
+
         init(context, attrs);
         configViewColor(UNCHECKED_COLOR);
     }
 
     public void configViewColor(int color) {
-        /* set color states list */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             button.setButtonTintList(ColorStateList.valueOf(getContext().getColor(color)));
         } else {
@@ -62,7 +65,6 @@ public class ToggleableRadioButton extends LinearLayout implements View.OnClickL
     }
 
     private void initComponent(Context context, AttributeSet attrs) {
-        /* create button */
         button = new RadioButton(context, attrs);
         button.setOnClickListener(this);
         button.setOnCheckedChangeListener(this);
@@ -79,20 +81,20 @@ public class ToggleableRadioButton extends LinearLayout implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        /* setUnchecked and reset children color */
-        int count = getGroupParent().getChildCount();
-        for (int i = 0; i < count; i++) {
-            if (getGroupParent().getChildAt(i) instanceof ToggleableRadioButton) {
-                ToggleableRadioButton child = (ToggleableRadioButton) getGroupParent().getChildAt(i);
+        if (isEnabled()) {
+            int count = getGroupParent().getChildCount();
+            for (int i = 0; i < count; i++) {
+                if (getGroupParent().getChildAt(i) instanceof ToggleableRadioButton) {
+                    ToggleableRadioButton child = (ToggleableRadioButton) getGroupParent().getChildAt(i);
 
-                if (child.getId() != button.getId()) {
-                    child.setChecked(false);
+                    if (child.getId() != button.getId()) {
+                        child.setChecked(false);
+                    }
                 }
             }
-        }
 
-        /* validate and set toggle value */
-        setChecked(!getGroupParent().isToggleable() || !isChecked);
+            setChecked(!getGroupParent().isToggleable() || !isChecked);
+        }
     }
 
     @Override
@@ -134,6 +136,20 @@ public class ToggleableRadioButton extends LinearLayout implements View.OnClickL
             button.setError(context.getString(R.string.toggleable_radio_not_set_error));
         } else {
             button.setError(null);
+        }
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        button.setEnabled(enabled);
+
+        if (!enabled) {
+            configViewColor(UNCHECKED_COLOR);
+        } else {
+            if (button.isChecked()) {
+                configViewColor(CHECKED_COLOR);
+            }
         }
     }
 }
